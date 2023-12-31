@@ -59,11 +59,9 @@ class Job extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-
         // Check if 'deadline' exists in $attributes
         if (array_key_exists('deadline', $this->attributes)) {
             $this->attributes['deadline'] = date('Y-m-d', strtotime($this->attributes['deadline']));
-
             // Check if 'deadline' is set and less than current date
             if (!empty($this->attributes['deadline']) && $this->attributes['deadline'] < date('Y-m-d')) {
                 $this->attributes['status'] = 0;

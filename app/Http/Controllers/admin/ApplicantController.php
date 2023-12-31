@@ -59,7 +59,9 @@ class ApplicantController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $applicant = Applicant::find($id);
+        $job = Job::find($applicant->job_id);
+        return  view('admin.applicants.show',compact('applicant','job'));
     }
 
     /**
@@ -83,6 +85,8 @@ class ApplicantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $applicant = Applicant::find($id);
+        $applicant->delete();
+        return redirect()->route('admin.applicants')->withSuccess(['Applicant deleted successfully!']);        
     }
 }

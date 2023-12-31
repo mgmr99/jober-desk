@@ -42,9 +42,8 @@ class RoleController extends Controller
         if(auth()->user()->hasRole('admin'))
         {
             Role::create(['name' => $request->name]);
-            flash('Role created successfully');
         }
-        return redirect()->route('admin.roles');
+        return redirect()->route('admin.roles')->withSuccess(['New Role created successfully!']);
     }
 
     /**

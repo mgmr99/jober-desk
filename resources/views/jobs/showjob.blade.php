@@ -1,6 +1,19 @@
 @extends('layouts.master')
 
 @section('content')
+@if (session()->has('success'))
+<div class="alert alert-success">
+    @if(is_array(session('success')))
+        <ul>
+            @foreach (session('success') as $message)
+                {{ $message }}
+            @endforeach
+        </ul>
+    @else
+        {{ session('success') }}
+    @endif
+</div>
+@endif
 <section class="profile-detail">
     <div class="container">
         <div class="col-md-12">
@@ -20,8 +33,8 @@
                                     <li><span>Salary: Nrs.</span>{{ $job->salary}}</li>
                                     <li><span>Deadline:</span>{{ $job->deadline}}</li>
                                     
-                                    @if (session('applied'))
-                                        <a href="#" type="button" class="btn brows-btn" style="background: rgb(124, 87, 87);">{{ session('applied') }} </a>
+                                    @if ($applicant)
+                                        <a href="#" type="button" class="btn brows-btn" style="background: rgb(124, 87, 87);">Applied</a>
                                         @else
                                         <a href="{{route('user.fill.details', ['id' => $job->id])}}" type="submit" class="btn brows-btn">Apply</a>
                                     @endif

@@ -39,6 +39,7 @@ table,table.dataTable th, table.dataTable td {
                         <th>Job Applied</th>
                         <th>Company Name</th>
                         <th>CV</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,6 +54,16 @@ table,table.dataTable th, table.dataTable td {
                         {{($applicant->job->company_name) }}
                     </td>
                     <td><a href="{{ asset('assets/resume/'.$applicant->resume) }}" target="_blank">View Resume</a></td>
+                    <td style="display: flex;">
+                        <a href="{{ route('admin.applicants.show', $applicant->id) }}" class="btn btn-primary btn-sm">View</a>
+
+                        <form action="{{ route('admin.applicants.delete', $applicant->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this applicant?');">Delete</button>
+                        </form>
+                    </td>
+                    </tr>
                     @endforeach
                 </tbody>
                 {{-- <tbody>

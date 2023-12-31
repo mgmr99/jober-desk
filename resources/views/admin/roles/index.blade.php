@@ -2,6 +2,19 @@
 @section('content')
     
 <section class="content">
+    @if (session()->has('success'))
+<div class="alert alert-success">
+    @if(is_array(session('success')))
+        <ul>
+            @foreach (session('success') as $message)
+                {{ $message }}
+            @endforeach
+        </ul>
+    @else
+        {{ session('success') }}
+    @endif
+</div>
+@endif
     <!-- Default box -->
     <div class="container-fluid">
         <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">Add Role</a>
@@ -13,7 +26,7 @@
                         <input type="text" name="search" class="form-control float-right" placeholder="Search" value="{{ request('search') }}">
                         </form>
                         <div class="input-group-append">
-                          <button type="submit" class="btn btn-default">
+                        <button type="submit" class="btn btn-default">
                             <i class="fas fa-search"></i>
                           </button>
                         </div>
@@ -103,3 +116,4 @@
 </section>
     
 @endsection
+

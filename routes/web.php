@@ -51,12 +51,12 @@ Route::group(['middleware' => ['role:user']],function()
     {
         Route::get('/', [JobController::class, 'index'])->name('user.jobs');
         Route::get('/search', [JobController::class, 'search'])->name('user.jobs.search');
-        Route::get('show', [JobController::class, 'index'])->name('user.jobs');
 
-        Route::get('show/{id}/apply', [JobController::class, 'apply'])->name('user.job.apply');
-        Route::post('show/{id}/apply', [JobController::class, 'apply'])->name('user.job.apply');
 
-        Route::get('show/{id}/apply/details', [JobController::class, 'filldetails'])->name('user.fill.details');
+        Route::get('show/{id}', [JobController::class, 'show'])->name('user.jobs.show');
+        Route::post('show/{id}', [JobController::class, 'show'])->name('user.jobs.show');
+
+        Route::get('show/{id}/apply', [JobController::class, 'filldetails'])->name('user.fill.details');
         Route::post('show/{id}/apply/details', [JobController::class, 'storedetails'])->name('user.store.details');
 
         Route::get('/show/apply/{id}', [JobController::class, 'store'])->name('user.application.store');
@@ -114,6 +114,8 @@ Route::group(['middleware' => ['role:admin|reviewer']], function () {
         Route::group(['prefix'=>'admin/applicants'],function(){
             Route::get('/', [ApplicantController::class, 'index'])->name('admin.applicants');
             Route::get('/search', [ApplicantController::class, 'search'])->name('admin.applicants.search');
+            Route::get('/show/{id}', [ApplicantController::class, 'show'])->name('admin.applicants.show');
+            Route::delete('delete/{id}', [ApplicantController::class, 'destroy'])->name('admin.applicants.delete');
         });
 
         //reports

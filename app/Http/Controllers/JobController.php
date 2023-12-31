@@ -14,21 +14,16 @@ class JobController extends Controller
 {
     public function index(){
         $jobs = Job::where('status',1)->get();
-        return view('jobs.show',compact('jobs'));
+        return view('jobs.index',compact('jobs'));
     }
 
-    public function apply($id)
+    public function show($id)
     {
-        $user = auth()->user();
         $job = Job::find($id);
-        $applicant = Applicant::where('user_id', $user->id)->where('job_id', $id)->first();
+        
+        $applicant = Applicant::where(['user_id'=>auth()->user()->id,'job_id'=> $id])->first();
 
-        if ($applicant)
-        {
-            session()->flash('applied', 'Applied');
-        }
-
-        return view('jobs.applyjob', compact('job'));
+        return view('jobs.showjob',compact('job','applicant'));
     }
 
     public function filldetails(string $job_id)
@@ -43,33 +38,40 @@ class JobController extends Controller
         // Validate the request
         if (!$request->validated()) 
         {
-            flash('Error in applying');
-            return view( 'user.applyform',compact('id'));
+            return view( 'user.applyform',compact('id'))->withErrors();
         }
 
-        $name = $request->RS;
-        $name = preg_replace('/\s+/', '', $name);
-        $newResumeName = time(). $name . '.' . $request->resume->extension();
+        //if user already applied and has record on applicant table
+        $applicant = Applicant::where('user_id', auth()->user()->id)->where('job_id', $id)->first();
+        if($applicant)
+        {
+            return redirect()->route('user.jobs.show', compact('id'))->with('applied', 'You have already applied for this job');
+        }
+        else
+        {  
+            $name = $request->RS;
+            $name = preg_replace('/\s+/', '', $name);
+            $newResumeName = time(). $name . '.' . $request->resume->extension();
 
-        // Store only the image name in the database
-        $storedName = pathinfo($newResumeName, PATHINFO_BASENAME);
+            // Store only the image name in the database
+            $storedName = pathinfo($newResumeName, PATHINFO_BASENAME);
 
-        // Move the image to the public/assets/images directory
-        $path = $request->resume->move(public_path('assets/resume'), $newResumeName);
+            // Move the image to the public/assets/images directory
+            $path = $request->resume->move(public_path('assets/resume'), $newResumeName);
 
 
-        // Create the applicant record
-        $applicant = Applicant::create([
-            'user_id'=> auth()->user()->id,
-            'name' => $request->name,
-            'email'=>$request->email,
-            'address'=>$request->address,
-            'contact'=>$request->contact,
-            'resume'=>$storedName,
-            'job_id' => $id,
-        ]); 
-        flash('Applied Successfully.');
-        return redirect()->route('user.job.apply', compact('id'));
+            // Create the applicant record
+            $applicant = Applicant::create([
+                'user_id'=> auth()->user()->id,
+                'name' => $request->name,
+                'email'=>$request->email,
+                'address'=>$request->address,
+                'contact'=>$request->contact,
+                'resume'=>$storedName,
+                'job_id' => $id,
+            ]); 
+            return redirect()->route('user.jobs.show', compact('id'))->withSuccess(['You applied for this job successfully!']);
+        }
     }
 
     public function search(Request $request)

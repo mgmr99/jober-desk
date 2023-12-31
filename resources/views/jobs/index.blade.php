@@ -24,7 +24,7 @@
             <div class="companies">
                 @foreach ($jobs as $job)
                 <div class="company-list">
-                    <form action="{{ route('user.job.apply',$job->id) }}" method="post">
+                    <form action="{{ route('user.jobs.show',$job->id) }}" method="post">
                         @csrf
                     <div class="row">
                         <div class="col-md-2 col-sm-2">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\reviewer;
 
 use App\Models\Job;
+use App\Events\JobCreated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -70,6 +71,16 @@ class ReviewJobController extends Controller
         $job = Job::find($id);
         $job->status = 1;
         $job->save();
+
+        $data = [
+            'title' => $job->title,
+            'description' => $job->description,
+            'company_name' => $job->company_name,
+            'salary' => $job->salary,
+            'location' => $job->address,
+            'job_type' => $job->job_type,
+        ];
+        event(new JobCreated($data));
         return redirect()->route('admin.review-jobs')->with('success','Job published successfully');
     }
 
