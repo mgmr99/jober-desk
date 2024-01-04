@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Report;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,7 +19,8 @@ class DashboardController extends Controller
         $users = User::get();
         $jobs = Job::get();
         $reports = Report::get();
-        return view('admin.dashboard.index',compact('users','jobs','reports'));
+        $notification = Notification::whereNull('read_at')->get();
+        return view('admin.dashboard.index',compact('users','jobs','reports','notification'));
     }
 
     /**

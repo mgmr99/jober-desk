@@ -30,7 +30,7 @@ class UserMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'User Mail',
+            subject: 'New Job Published',
         );
     }
 

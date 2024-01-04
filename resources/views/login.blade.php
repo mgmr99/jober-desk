@@ -12,7 +12,7 @@
                 <input type="email" name="email" class="form-control input-lg" placeholder="Email">
                 <input type="password" name="password" class="form-control input-lg" placeholder="Password">
                 <label><a href="">Forget Password?</a></label>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary" style="background-color: #8d4545;">Login</button>
                 <p>Be a part of us- <a href="{{ route('user.register') }}">Create An Account</a></p>
             </form>
         </div>

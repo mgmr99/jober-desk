@@ -13,11 +13,9 @@
 		<!-- Style & Common Css --> 
 		<link rel="stylesheet" href="{{ asset('css/common.css') }}">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
+        @notifyCss
     </head>
-	
-    <body>
-        	
+    <body> 	
     <nav class="navbar navbar-default navbar-sticky bootsnav">
 
         <div class="container">      
@@ -62,8 +60,8 @@
                     </ul>
             </div><!-- /.navbar-collapse -->
         </div>   
+    @include('notify::components.notify')
     </nav>
-
         @yield('content')
     
         <!-- footer start -->
@@ -140,5 +138,6 @@
     <script type="text/javascript" src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/bootsnav.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    @notifyJs
 </body>
 </html>

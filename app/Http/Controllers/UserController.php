@@ -8,23 +8,25 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\UserRegisteration;
 use App\Http\Requests\AuthValidationRequest;
-use App\Http\Requests\RegisterValidationRequest;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use App\Http\Requests\RegisterValidationRequest;
 
 class UserController extends Controller
 {
     public function index()
     {
         $latest_jobs = Job::where('status', 1)->latest()->take(5)->get();
+        notify()->success('Welcome to Jober Desk ⚡️','Hello,');
         return view('index', compact('latest_jobs'));
     }
 
     public function home()
     {
+        connectify('success', 'Hey, there', 'You are logged in successfully');
         $latest_jobs = Job::where('status',1)->latest()->take(5)->get();
-        $username = auth()->user()->name;
-        return view('user.home', compact('username', 'latest_jobs'));
+        return view('user.home', compact('latest_jobs'));
     }
 
     public function authenticate(AuthValidationRequest $request)
@@ -54,7 +56,17 @@ class UserController extends Controller
         Auth::login($user);  
         $user->assignRole('user');
         if($user->hasRole('user'))
-        {
+        { 
+            $registerationData = [
+                'user_id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ];
+            $admins = User::role('admin')->get();
+            foreach($admins as $admin)
+            {
+                $admin->notify(new UserRegisteration($registerationData));
+            }      
             return redirect()->route('user.home')->with('register_success', 'Registeration Successfull.');
         }
         else{

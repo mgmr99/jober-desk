@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\AdminJobController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\ApplicantController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\NotificationController;
 use App\Http\Controllers\reviewer\ReviewJobController;
 
 /*
@@ -123,6 +124,12 @@ Route::group(['middleware' => ['role:admin|reviewer']], function () {
             Route::get('/', [ReportController::class, 'index'])->name('admin.reports');
             Route::get('/show/{id}', [ReportController::class, 'show'])->name('admin.reports.show');
             Route::delete('delete/{id}', [ReportController::class, 'destroy'])->name('admin.reports.delete');
+        });
+
+        //notifications
+        Route::group(['prefix'=>'admin/notifications'],function(){
+            Route::get('/', [NotificationController::class, 'index'])->name('admin.notifications');
+            Route::post('mark-as-read/{id}', [NotificationController::class, 'markAsRead'])->name('admin.notifications.markAsRead');
         });
 
     });

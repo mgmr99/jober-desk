@@ -11,6 +11,29 @@
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+		<style>
+			.icon {
+				width:30px; 
+				height:30px;
+				position: relative;
+			}
+			.txt{
+				background-color: #fa3e3e;
+				color: #fff;
+				font-size: small;
+				position: absolute;
+				width: 42%;
+				height: 45%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 2px;
+				margin: 0 auto;
+				top: 2.5px;
+				left: 21px;
+				border-radius: 50%;
+			}
+		</style>
 	</head>
 	<body class="hold-transition sidebar-mini">
 		<!-- Site wrapper -->
@@ -35,6 +58,7 @@
 							<i class="fas fa-expand-arrows-alt"></i>
 						</a>
 					</li>
+					@yield('notification')
 					<li class="nav-item dropdown">
 						<a class="nav-link p-0 pr-3" data-toggle="dropdown" href="#">
 							<img src="{{ asset('img/avatar5.png') }}" class='img-circle elevation-2' width="40" height="40" alt="">

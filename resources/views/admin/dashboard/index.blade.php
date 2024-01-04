@@ -1,4 +1,15 @@
 @extends('layouts.adminpanel')
+@section('notification')
+<li class="nav-item">
+	<a class="nav-link"  href="{{ route('admin.notifications') }}" role="button">
+		<i class="fas fa-bell">
+		</i>
+		@if ($notifications->count()>0)
+			<p class="txt">{{ $notifications->count()}}</p>
+		@endif
+	</a>
+</li>
+@endsection
 @section('content')
     <!-- Content Wrapper. Contains page content -->
 	@if(flash()->message)
